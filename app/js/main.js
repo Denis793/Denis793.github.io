@@ -32,7 +32,7 @@ function listZone() {
 
 	zones.forEach(zone => {
 		const zoneItem = document.createElement('li');
-		zoneItem.innerHTML = `${zone} <button class="delete-button">Delete</button>`;
+		zoneItem.innerHTML = `${zone} <button class="delete-button button">Delete</button>`;
 
 		const deleteButton = zoneItem.querySelector('.delete-button');
 		deleteButton.addEventListener('click', () => {
