@@ -22,8 +22,8 @@ h1{
 
 /* Authorization Section */
 .auth,
-.create-cdn,
-.cdn-list,
+.create-cdn-zone,
+.cdn-zone-list,
 .messages,
 .footer {
    margin: 18px;
@@ -35,16 +35,14 @@ h1{
    text-align: center;
 }
 
-.auth-form,
-.create-cdn {
+.form {
    display: flex;
    flex-direction: column;
    align-items: center;
    gap: 10px;
 }
 
-.auth__input,
-.create-cdn__input {
+.input {
    padding: 10px;
    border: none;
    border-radius: 5px;
@@ -53,14 +51,12 @@ h1{
    transition: background-color 0.3s, transform 0.3s;
 }
 
-.auth__input:hover,
-.create-cdn__input:hover {
+.input:hover {
    background-color: #f0f0f0;
    transform: scale(1.02);
 }
 
-.auth__button,
-.create-cdn__button {
+.button {
    padding: 12px;
    margin: 12px;
    width: 180px;
@@ -72,29 +68,9 @@ h1{
    transition: background-color 0.3s, transform 0.3s;
 }
 
-.auth__button:hover,
-.create-cdn__button:hover {
+.button:hover {
    background-color: #0056b3;
    transform: scale(1.05);
-}
-
-/* CDN List Section */
-.cdn-list__list {
-   list-style: none;
-   padding: 0;
-   margin: 0;
-}
-
-.cdn-list__list li {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   padding: 5px 0;
-   border-bottom: 1px solid #fff;
-}
-
-.cdn-list__list li:last-child {
-   border-bottom: none;
 }
 
 /* Footer Section */
@@ -106,7 +82,7 @@ h1{
    text-align: center;
 }
 
-.footer__social-link {
+.footer-social-media {
    color: #007bff;
    text-decoration: none;
 }
