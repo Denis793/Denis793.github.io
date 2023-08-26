@@ -7,6 +7,10 @@ html {
    color: #000;
 }
 
+h1{
+   text-align: center;
+}
+
 .container {
    display: flex;
    flex-direction: column;
@@ -28,6 +32,7 @@ html {
    background-color: #18232e;
    color: #fff;
    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   text-align: center;
 }
 
 .auth-form,
@@ -44,7 +49,7 @@ html {
    border: none;
    border-radius: 5px;
    background-color: #fff;
-   width: 100%;
+   width: 80%;
    transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -56,7 +61,9 @@ html {
 
 .auth__button,
 .create-cdn__button {
-   padding: 10px 20px;
+   padding: 12px;
+   margin: 12px;
+   width: 180px;
    border: none;
    border-radius: 5px;
    background-color: #007bff;
