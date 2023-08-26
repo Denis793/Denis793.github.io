@@ -1,52 +1,73 @@
-// Функція для відображення повідомлень
+// Функція для відправки запиту та обробки результату
+async function sendRequest(url, method, data = null, headers = {}) {
+	try {
+		const response = await fetch(url, {
+			method: method,
+			headers: {
+				'Content-Type': 'application/json',
+				...headers
+			},
+			body: JSON.stringify(data)
+		});
+
+		const responseData = await response.json();
+
+		if (!response.ok) {
+			throw new Error(responseData.message || 'Something went wrong.');
+		}
+
+		return responseData;
+	} catch (error) {
+		throw error;
+	}
+}
+
+// Функція для відображення повідомлення
 function showMessage(message, isSuccess) {
 	const messagesContainer = document.querySelector('.messages');
 	const messageElement = document.createElement('div');
-	messageElement.classList.add('message', isSuccess ? 'message--success' : 'message--error');
 	messageElement.textContent = message;
+	messageElement.classList.add('message', isSuccess ? 'message--success' : 'message--error');
 	messagesContainer.appendChild(messageElement);
 
-	// Видалення повідомлення через 5 секунд
 	setTimeout(() => {
 		messageElement.remove();
 	}, 5000);
 }
 
 // Функція авторизації
-function authorize(token) {
-	const apiUrl = 'https://storage.blazingcdn.net/v3';
+async function authorize(token) {
+	const authForm = document.querySelector('#authForm');
 
-	// Виклик API для авторизації
-	fetch(apiUrl, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${token}`
-		}
-	})
-		.then(response => {
-			if (response.ok) {
-				showMessage('Authorization successful', true);
-			} else {
-				showMessage('Authorization failed', false);
-			}
-		})
-		.catch(error => {
-			showMessage('An error occurred during authorization', false);
+	try {
+		const responseData = await sendRequest('https://storage.blazingcdn.net/v3', 'POST', {
+			token: token
 		});
+
+		showMessage('Authorization successful', true);
+		authForm.reset();
+	} catch (error) {
+		showMessage('Authorization failed', false);
+		console.error(error);
+	}
 }
 
-// Отримання елемента input для token
-const tokenInput = document.getElementById('token');
-
-// Відправка форми авторизації
-document.getElementById('authForm').addEventListener('submit', function(event) {
+// Отримуємо та обробляємо форму авторизації
+const authForm = document.querySelector('#authForm');
+authForm.addEventListener('submit', function (event) {
 	event.preventDefault();
-	const token = tokenInput.value;
-	if (token) {
+
+	const tokenInput = document.querySelector('#token');
+	const token = tokenInput.value.trim();
+
+	if (token !== '') {
 		authorize(token);
 	} else {
-		showMessage('Please enter a token', false);
+		showMessage('Token field is required', false);
 	}
 });
 
-// Ваші інші функції та код тут
+// Запускаємо функцію після завантаження сторінки
+window.addEventListener('DOMContentLoaded', () => {
+	// Додатковий код для ініціалізації
+});
