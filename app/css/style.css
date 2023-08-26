@@ -90,3 +90,11 @@ h1{
       padding: 20px;
    }
 }
+
+.message--error{
+   color: #c94343;
+}
+
+.message--success{
+   color: #38bb38;
+}
