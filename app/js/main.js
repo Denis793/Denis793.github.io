@@ -1,49 +1,75 @@
-// Функція авторизації
-function authorize() {
-	const tokenInput = document.getElementById("token");
-	const messageContainer = document.getElementById("messageContainer");
+// main.js
 
-	// Запит до Back-End для авторизації
-	fetch("https://storage.blazingcdn.net/v3/authorize", {
-		method: "POST",
-		headers: {
-			"Authorization": `Bearer ${tokenInput.value}`
-		}
-	})
-		.then(response => {
-			if (response.ok) {
-				showMessage("Authorization successful", "green");
-			} else {
-				showMessage("Authorization failed", "red");
-			}
-		})
-		.catch(error => {
-			showMessage("Authorization failed", "red");
-		});
-}
-
-// Функція показу повідомлення
+// Функція відображення повідомлень певним кольором
 function showMessage(message, color) {
-	const messageContainer = document.getElementById("messageContainer");
-	const messageElement = document.createElement("div");
+	const messageContainer = document.getElementById('messageContainer');
+	const messageElement = document.createElement('div');
 	messageElement.textContent = message;
 	messageElement.style.color = color;
 	messageContainer.appendChild(messageElement);
 }
 
-// Функція видалення повідомлень
-function clearMessages() {
-	const messageContainer = document.getElementById("messageContainer");
-	messageContainer.innerHTML = "";
+// Функція авторизації за допомогою наданого токена
+async function authorize(token) {
+	try {
+		const response = await fetch('https://storage.blazingcdn.net/v3', {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+
+		if (response.ok) {
+			showMessage('Authorization successful', 'green');
+		} else {
+			showMessage('Authorization failed', 'red');
+		}
+	} catch (error) {
+		showMessage('Error during authorization', 'red');
+	}
 }
 
-// Обробник події для форми авторизації
-document.getElementById("authForm").addEventListener("submit", function (e) {
-	e.preventDefault();
-	clearMessages();
-	authorize();
+// Функція для переліку зон CDN
+function listZones(zones) {
+	const cdnList = document.getElementById('cdnList');
+	cdnList.innerHTML = ''; // Clear the existing list
+
+	zones.forEach(zone => {
+		const zoneItem = document.createElement('li');
+		zoneItem.textContent = zone.name;
+
+		const deleteButton = document.createElement('button');
+		deleteButton.textContent = 'Delete';
+		deleteButton.classList.add('delete-cdn');
+
+		zoneItem.appendChild(deleteButton);
+		cdnList.appendChild(zoneItem);
+	});
+}
+
+// Слухач подій для форми авторизації
+document.getElementById('authForm').addEventListener('submit', function(event) {
+	event.preventDefault();
+	const token = document.getElementById('token').value;
+	authorize(token);
 });
 
-// Ініціалізація
-clearMessages();
+// Слухач подій для створення зони CDN
+document.getElementById('createCdnBtn').addEventListener('click', function() {
+	const cdnName = document.getElementById('cdnName').value;
+	// Logic to create a CDN zone using cdnName
+	// ...
+	showMessage(`CDN zone "${cdnName}" created`, 'green');
+});
 
+// Прослуховувач подій для видалення зони CDN (делеговано)
+document.getElementById('cdnList').addEventListener('click', function(event) {
+	if (event.target.classList.contains('delete-cdn')) {
+		const cdnItem = event.target.parentElement;
+		const cdnName = cdnItem.textContent;
+		// Logic to delete the CDN zone using cdnName
+		// ...
+		showMessage(`CDN zone "${cdnName}" deleted`, 'green');
+		cdnItem.remove();
+	}
+});
