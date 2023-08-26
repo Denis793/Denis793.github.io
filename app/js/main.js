@@ -1,7 +1,7 @@
 // Імпорт модулів
-import authorize from './app/js/authorize.js';
-import listZone from './app/js/listZone.js';
-import showMessage from './app/js/message.js';
+import authorize from './authorize.js';
+import listZone from './listZone.js';
+import showMessage from './message.js';
 
 // Виклики функцій з імпортованих модулів
 authorize();
