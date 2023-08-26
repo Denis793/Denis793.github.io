@@ -18,7 +18,7 @@ function authorize(token) {
 
 	// Виклик API для авторизації
 	fetch(apiUrl, {
-		method: 'POST',
+		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${token}`
 		}
