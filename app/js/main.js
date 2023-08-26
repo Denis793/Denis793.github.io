@@ -57,7 +57,7 @@ document.getElementById('authForm').addEventListener('submit', function(event) {
 // Слухач подій для створення зони CDN
 document.getElementById('createCdnBtn').addEventListener('click', function() {
 	const cdnName = document.getElementById('cdnName').value;
-	// Logic to create a CDN zone using cdnName
+	// Логіка створення зони CDN за допомогою cdnName
 	// ...
 	showMessage(`CDN zone "${cdnName}" created`, 'green');
 });
@@ -67,7 +67,7 @@ document.getElementById('cdnList').addEventListener('click', function(event) {
 	if (event.target.classList.contains('delete-cdn')) {
 		const cdnItem = event.target.parentElement;
 		const cdnName = cdnItem.textContent;
-		// Logic to delete the CDN zone using cdnName
+		// Логіка видалення зони CDN за допомогою cdnName
 		// ...
 		showMessage(`CDN zone "${cdnName}" deleted`, 'green');
 		cdnItem.remove();
