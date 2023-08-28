@@ -91,10 +91,10 @@ h1{
    }
 }
 
-.message--error{
-   color: #c94343;
+.error-message{
+   color: #ec8a00;
 }
 
-.message--success{
-   color: #38bb38;
+.success-message{
+   color: #2aa6c4;
 }

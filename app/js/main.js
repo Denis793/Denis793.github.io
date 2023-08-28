@@ -1,47 +1,46 @@
-// Функція для відображення повідомлення
+// Функція для відображення повідомлень
 function showMessage(message, isError = false) {
-	const messagesContainer = document.querySelector('.messages');
+	const messagesSection = document.querySelector('.messages');
 	const messageElement = document.createElement('div');
+	messageElement.className = isError ? 'error-message' : 'success-message';
 	messageElement.textContent = message;
-	messageElement.classList.add('message', isError ? 'message--error' : 'message--success');
-	messagesContainer.appendChild(messageElement);
+	messagesSection.appendChild(messageElement);
 	setTimeout(() => {
-		messagesContainer.removeChild(messageElement);
+		messagesSection.removeChild(messageElement);
 	}, 5000);
 }
 
 // Функція для авторизації
 async function authorize(token) {
-	try {
-		const response = await fetch('https://storage.blazingcdn.net/v3/auth', {
-			method: 'GET',
-			headers: {
-				'Authorization': `Bearer ${token}`
-			}
-		});
+	const apiUrl = 'https://storage.blazingcdn.net/v3';
+	const authHeaders = {
+		'Authorization': `Bearer ${token}`,
+		'accept': 'application/json'
+	};
 
+	try {
+		const response = await fetch(apiUrl, { headers: authHeaders });
 		if (response.ok) {
 			showMessage('Authorization successful', false);
 		} else {
 			showMessage('Authorization failed', true);
 		}
 	} catch (error) {
-		showMessage('An error occurred during authorization', true);
+		showMessage('An error occurred', true);
 	}
 }
 
-// Отримуємо поле для вводу токену
+// Отримання елементів з DOM
+const authForm = document.getElementById('authForm');
 const tokenInput = document.getElementById('token');
 
-// Додаємо обробник події на форму авторизації
-document.getElementById('authForm').addEventListener('submit', (event) => {
+// Обробка подання форми для авторизації
+authForm.addEventListener('submit', (event) => {
 	event.preventDefault();
-	const tokenValue = tokenInput.value.trim();
-	if (tokenValue !== '') {
-		authorize(tokenValue);
+	const token = tokenInput.value;
+	if (token) {
+		authorize(token);
 	} else {
 		showMessage('Please enter a token', true);
 	}
 });
-
-// Додайте решту функціоналу тут, наприклад, створення CDN зони, список CDN зон та інше.
