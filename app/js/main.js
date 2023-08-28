@@ -1,46 +1,49 @@
-// Функція для відображення повідомлень
+const apiUrl = 'https://storage.blazingcdn.net/v3';
+
+// Функція для відображення повідомлення на 5 секунд
 function showMessage(message, isError = false) {
 	const messagesSection = document.querySelector('.messages');
 	const messageElement = document.createElement('div');
 	messageElement.className = isError ? 'error-message' : 'success-message';
 	messageElement.textContent = message;
 	messagesSection.appendChild(messageElement);
+
 	setTimeout(() => {
 		messagesSection.removeChild(messageElement);
 	}, 5000);
 }
 
 // Функція для авторизації
-async function authorize(token) {
-	const apiUrl = 'https://storage.blazingcdn.net/v3';
-	const authHeaders = {
-		'Authorization': `Bearer ${token}`,
-		'accept': 'application/json'
-	};
+function authorize(token) {
+	const authForm = document.getElementById('authForm');
+	authForm.addEventListener('submit', async (e) => {
+		e.preventDefault();
 
-	try {
-		const response = await fetch(apiUrl, { headers: authHeaders });
-		if (response.ok) {
-			showMessage('Авторизація успішна!', false);
-		} else {
-			showMessage('Помилка авторизації!', true);
+		try {
+			const response = await fetch(apiUrl, {
+				method: 'GET',
+				headers: {
+					'Authorization': `Bearer ${token}`,
+					'accept': 'application/json'
+				}
+			});
+
+			if (response.ok) {
+				showMessage('Авторизація успішна!', false);
+			} else {
+				showMessage('Помилка авторизації!', true);
+			}
+		} catch (error) {
+			showMessage('Під час авторизації сталася помилка!', true);
 		}
-	} catch (error) {
-		showMessage('Виникла помилка!', true);
-	}
+	});
 }
 
-// Отримання елементів з DOM
-const authForm = document.getElementById('authForm');
+// Отримання поля вводу токену
 const tokenInput = document.getElementById('token');
 
-// Обробка подання форми для авторизації
-authForm.addEventListener('submit', (event) => {
-	event.preventDefault();
-	const token = tokenInput.value;
-	if (token) {
-		authorize(token);
-	} else {
-		showMessage('Будь ласка, введіть Token!', true);
-	}
+// Виклик функції авторизації при введенні токену
+tokenInput.addEventListener('input', (e) => {
+	const token = e.target.value;
+	authorize(token);
 });
