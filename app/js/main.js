@@ -13,7 +13,7 @@ function showMessage(message, isError = false) {
 // Функція для авторизації
 async function authorize(token) {
 	try {
-		const response = await fetch('https://storage.blazingcdn.net/v3', {
+		const response = await fetch('https://storage.blazingcdn.net/v3/auth', {
 			method: 'GET',
 			headers: {
 				'Authorization': `Bearer ${token}`
