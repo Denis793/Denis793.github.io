@@ -21,12 +21,12 @@ async function authorize(token) {
 	try {
 		const response = await fetch(apiUrl, { headers: authHeaders });
 		if (response.ok) {
-			showMessage('Authorization successful', false);
+			showMessage('Авторизація успішна!', false);
 		} else {
-			showMessage('Authorization failed', true);
+			showMessage('Помилка авторизації!', true);
 		}
 	} catch (error) {
-		showMessage('An error occurred', true);
+		showMessage('Виникла помилка!', true);
 	}
 }
 
@@ -41,6 +41,6 @@ authForm.addEventListener('submit', (event) => {
 	if (token) {
 		authorize(token);
 	} else {
-		showMessage('Please enter a token', true);
+		showMessage('Будь ласка, введіть Token!', true);
 	}
 });
