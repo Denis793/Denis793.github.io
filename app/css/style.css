@@ -98,3 +98,7 @@ h1{
 .success-message{
    color: #2aa6c4;
 }
+
+.error{
+   color: red
+}

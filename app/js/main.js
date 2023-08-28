@@ -1,49 +1,61 @@
-const apiUrl = 'https://storage.blazingcdn.net/v3';
+document.addEventListener('DOMContentLoaded', () => {
+	// Функція для виводу повідомлення на певний проміжок часу
+	const showMessage = (message, color = 'black') => {
+		const messagesSection = document.querySelector('.messages');
+		const messageElement = document.createElement('p');
+		messageElement.textContent = message;
+		messageElement.style.color = color;
+		messagesSection.appendChild(messageElement);
+		setTimeout(() => {
+			messageElement.remove();
+		}, 7000);
+	};
 
-// Функція для відображення повідомлення на 5 секунд
-function showMessage(message, isError = false) {
-	const messagesSection = document.querySelector('.messages');
-	const messageElement = document.createElement('div');
-	messageElement.className = isError ? 'error-message' : 'success-message';
-	messageElement.textContent = message;
-	messagesSection.appendChild(messageElement);
-
-	setTimeout(() => {
-		messagesSection.removeChild(messageElement);
-	}, 5000);
-}
-
-// Функція для авторизації
-function authorize(token) {
-	const authForm = document.getElementById('authForm');
-	authForm.addEventListener('submit', async (e) => {
-		e.preventDefault();
-
-		try {
-			const response = await fetch(apiUrl, {
-				method: 'GET',
-				headers: {
-					'Authorization': `Bearer ${token}`,
-					'accept': 'application/json'
-				}
-			});
-
+	// Підключення до серверу blazingcdn.com
+	fetch('https://storage.blazingcdn.net/v3')
+		.then(response => {
 			if (response.ok) {
-				showMessage('Авторизація успішна!', false);
+				showMessage('Під\'єднання до серверу успішне', 'green');
 			} else {
-				showMessage('Помилка авторизації!', true);
+				showMessage('Помилка під\'єднання до серверу', 'red');
 			}
-		} catch (error) {
-			showMessage('Під час авторизації сталася помилка!', true);
+		})
+		.catch(error => {
+			showMessage('Помилка під\'єднання до серверу', 'red');
+		});
+
+	// Перевірка токену
+	const checkToken = token => {
+		if (!token) {
+			showMessage('Відсутній токен', 'red');
+			return;
 		}
+
+		// Виконайте перевірку токену тут і виведіть повідомлення відповідно
+	};
+
+	// Авторизація
+	const authForm = document.getElementById('authForm');
+	authForm.addEventListener('submit', event => {
+		event.preventDefault();
+		const token = document.getElementById('token').value;
+
+		// Виконайте авторизацію тут і виведіть повідомлення відповідно
+		const headers = new Headers({
+			'Authorization': `Bearer ${token}`,
+			'accept': 'application/json'
+		});
+
+		fetch('https://storage.blazingcdn.net/v3', { method: 'GET', headers })
+			.then(response => {
+				if (response.ok) {
+					showMessage('Успішна авторизація', 'green');
+				} else {
+					showMessage('Помилка авторизації', 'red');
+				}
+			})
+			.catch(error => {
+				showMessage('Помилка авторизації', 'red');
+			});
 	});
-}
-
-// Отримання поля вводу токену
-const tokenInput = document.getElementById('token');
-
-// Виклик функції авторизації при введенні токену
-tokenInput.addEventListener('input', (e) => {
-	const token = e.target.value;
-	authorize(token);
 });
